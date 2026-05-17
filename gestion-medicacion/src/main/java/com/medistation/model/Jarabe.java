@@ -10,8 +10,8 @@ package com.medistation.model;
  */
 public class Jarabe extends Medicamento {
 
-    public Jarabe(String nombre, String principioActivo, double stock) {
-        super(nombre, principioActivo, stock);
+    public Jarabe(String nombre, String principioActivo, double stock, double umbralAlerta) {
+        super(nombre, principioActivo, stock, "ml", umbralAlerta);
     }
 
     @Override

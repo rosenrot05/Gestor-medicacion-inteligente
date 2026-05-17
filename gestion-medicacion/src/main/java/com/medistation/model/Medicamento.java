@@ -12,11 +12,16 @@ public abstract class Medicamento {
     private String nombre;
     private String principioActivo;
     private double stock;
+    
+    private String unidadMedida; 
+    private double umbralAlerta;
 
-    public Medicamento(String nombre, String principioActivo, double stock) {
+    public Medicamento(String nombre, String principioActivo, double stock, String unidadMedida, double umbralAlerta) {
         this.nombre = nombre;
         this.principioActivo = principioActivo;
         this.stock = stock;
+        this.unidadMedida = unidadMedida;
+        this.umbralAlerta = umbralAlerta;
     }
 
     public String getNombre() {
@@ -25,6 +30,18 @@ public abstract class Medicamento {
 
     public double getStock() {
         return stock;
+    }
+    
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public double getUmbralAlerta() {
+        return umbralAlerta;
+    }
+    
+    public String getPrincipioActivo() {
+        return principioActivo;
     }
 
     // Método abstracto que obligatoriamente implementarán las clases hijas
@@ -38,11 +55,10 @@ public abstract class Medicamento {
     // Sobrecarga de método 2: Actualización con registro de motivo (auditoría)
     public void actualizarStock(double cantidad, String motivo) {
         this.stock += cantidad;
-        System.out.println("Stock de " + nombre + " actualizado. Motivo: " + motivo + ". Cantidad: " + cantidad);
+        System.out.println("Stock de " + nombre + " actualizado. Motivo: " + motivo + ". Cantidad: " + cantidad + " " + unidadMedida);
     }
 
     public boolean alertarBajoStock() {
-        // Umbral de alerta: menos de 10 unidades restantes
-        return this.stock < 10.0;
+        return this.stock <= this.umbralAlerta;
     }
 }

@@ -10,8 +10,8 @@ package com.medistation.model;
  */
 public class Inhalador extends Medicamento {
 
-    public Inhalador(String nombre, String principioActivo, double stock) {
-        super(nombre, principioActivo, stock);
+    public Inhalador(String nombre, String principioActivo, double stock, double umbralAlerta) {
+        super(nombre, principioActivo, stock, "dosis/puffs", umbralAlerta);
     }
 
     @Override

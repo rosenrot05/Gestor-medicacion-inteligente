@@ -10,8 +10,8 @@ package com.medistation.model;
  */
 public class Capsula extends Medicamento {
 
-    public Capsula(String nombre, String principioActivo, double stock) {
-        super(nombre, principioActivo, stock);
+    public Capsula(String nombre, String principioActivo, double stock, double umbralAlerta) {
+        super(nombre, principioActivo, stock, "cápsulas", umbralAlerta);
     }
 
     @Override

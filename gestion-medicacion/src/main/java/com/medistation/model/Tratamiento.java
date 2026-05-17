@@ -69,6 +69,10 @@ public class Tratamiento {
     public double getDosis() {
         return dosis;
     }
+    
+    public Medicamento getMedicina() {
+        return medicina;
+    }
 
     public boolean verificarAlertaHorario() {
         // Retorna true si la hora actual ya pasó o es igual a la hora de la próxima toma
