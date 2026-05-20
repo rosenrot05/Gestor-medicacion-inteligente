@@ -47,7 +47,7 @@ public class DetectorSobredosis implements ValidadorTratamiento {
         }
 
         double dosisTotalProyectada = dosisAcumulada24h + dosisDiariaNueva;
-        
+       
         // Buscamos el umbral en nuestro Map. Si el doctor receta algo que no está en la tabla, 
         // usamos getOrDefault para poner un límite genérico (ej. 1000.0) por seguridad.
         double umbralMaximoSeguro = baseDatosUmbrales.getOrDefault(principioNuevo, 1000.0); 

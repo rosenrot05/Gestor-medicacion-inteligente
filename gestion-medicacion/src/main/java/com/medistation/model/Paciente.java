@@ -21,7 +21,7 @@ public class Paciente {
     public Paciente(String nombre, int edad) {
         this.nombre = nombre;
         this.edad = edad;
-        // COMPOSICIÓN: Instanciamos el PerfilClinico directamente aquí adentro.
+        //Instanciamos el PerfilClinico directamente aquí adentro.
         // Nace y muere con el Paciente.
         this.perfil = new PerfilClinico(0.0); 
         this.tratamientos = new ArrayList<>();
@@ -46,6 +46,10 @@ public class Paciente {
     // Nota: Solo hay getter para el perfil, no setter, protegiendo la composición.
     public PerfilClinico getPerfil() {
         return perfil;
+    }
+    
+    public List<Tratamiento> getTratamientos(){
+        return tratamientos;
     }
 
     public void agregarTratamiento(Tratamiento t) {

@@ -5,6 +5,8 @@
 package com.medistation.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Tratamiento {
     private double dosis;
     private LocalDateTime proximaToma;
     private EstadoToma estadoActual;
+    private List<String> historialTomas;
 
     //Contadores para la adherencia
     private int tomasProgramadas;
@@ -30,12 +33,10 @@ public class Tratamiento {
         this.dosis = dosis;
         this.proximaToma = proximaToma;
         this.estadoActual = EstadoToma.PENDIENTE; // Todo tratamiento inicia pendiente
-
+        this.historialTomas = new ArrayList<>();
+        
         this.tomasProgramadas = 0;
         this.tomasCompletadas = 0;
-
-        //Vinculamos automáticamente el tratamiento a la lista del paciente
-        p.agregarTratamiento(this);
     }
 
     public Paciente getPacienteAsignado() {
@@ -72,6 +73,14 @@ public class Tratamiento {
     
     public Medicamento getMedicina() {
         return medicina;
+    }
+    
+    public void agregarRegistroHistorial(String registro) {
+    this.historialTomas.add(registro);
+}
+
+    public List<String> getHistorialTomas() {
+        return this.historialTomas;
     }
 
     public boolean verificarAlertaHorario() {
