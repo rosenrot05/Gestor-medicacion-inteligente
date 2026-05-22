@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.medistation.controller;
 
 import com.medistation.model.Capsula;
@@ -11,60 +7,40 @@ import com.medistation.model.Medicamento;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Rosa
- */
 public class InventarioController {
-    
+
     private final List<Medicamento> catalogoMedicamentos;
-    private static final double UMBRAL_ALERTA_DEFECTO = 10.0; // Para usuarios que no lo configuran
-    
+    private static final double UMBRAL_ALERTA_DEFECTO = 10.0;
+
     public InventarioController() {
         this.catalogoMedicamentos = new ArrayList<>();
     }
-    
-   
-    // MÉTODOS DE REGISTRO RÁPIDO (Usan el valor por defecto)
 
-    
+    // Registro rápido (umbral por defecto)
     public void registrarCapsula(String nombre, String principio, double stock) {
-        Medicamento capsula = new Capsula(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO);
-        agregarAlCatalogo(capsula);
+        agregarAlCatalogo(new Capsula(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO));
     }
-    
+
     public void registrarJarabe(String nombre, String principio, double stock) {
-        Medicamento jarabe = new Jarabe(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO);
-        agregarAlCatalogo(jarabe);
+        agregarAlCatalogo(new Jarabe(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO));
     }
-    
+
     public void registrarInhalador(String nombre, String principio, double stock) {
-        Medicamento inhalador = new Inhalador(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO);
-        agregarAlCatalogo(inhalador);
+        agregarAlCatalogo(new Inhalador(nombre, principio, stock, UMBRAL_ALERTA_DEFECTO));
     }
 
-
-    // SOBRECARGA DE MÉTODOS: REGISTRO PERSONALIZADO (El usuario elige el umbral)
-
-    
+    // Registro personalizado (sobrecarga con umbral propio)
     public void registrarCapsula(String nombre, String principio, double stock, double umbralPersonalizado) {
-        Medicamento capsula = new Capsula(nombre, principio, stock, umbralPersonalizado);
-        agregarAlCatalogo(capsula);
+        agregarAlCatalogo(new Capsula(nombre, principio, stock, umbralPersonalizado));
     }
-    
+
     public void registrarJarabe(String nombre, String principio, double stock, double umbralPersonalizado) {
-        Medicamento jarabe = new Jarabe(nombre, principio, stock, umbralPersonalizado);
-        agregarAlCatalogo(jarabe);
+        agregarAlCatalogo(new Jarabe(nombre, principio, stock, umbralPersonalizado));
     }
-    
+
     public void registrarInhalador(String nombre, String principio, double stock, double umbralPersonalizado) {
-        Medicamento inhalador = new Inhalador(nombre, principio, stock, umbralPersonalizado);
-        agregarAlCatalogo(inhalador);
+        agregarAlCatalogo(new Inhalador(nombre, principio, stock, umbralPersonalizado));
     }
-
-
-    // RESTO DE MÉTODOS DEL CONTROLADOR
-
 
     public Medicamento buscarMedicamento(String nombre) {
         for (Medicamento m : catalogoMedicamentos) {
@@ -72,18 +48,22 @@ public class InventarioController {
                 return m;
             }
         }
-        return null; // Retorna null si no lo encuentra
+        return null;
     }
 
     public void reabastecerMedicamento(String nombre, double cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a reabastecer debe ser mayor a cero.");
+        }
         Medicamento medicamento = buscarMedicamento(nombre);
         if (medicamento != null) {
             medicamento.actualizarStock(cantidad, "Reabastecimiento manual");
         } else {
-            throw new IllegalArgumentException("No es posible reabastecer. El fármaco no existe.");
+            throw new IllegalArgumentException("No es posible reabastecer. El fármaco '" + nombre + "' no existe.");
         }
     }
 
+    // Nota: el UML dice List<String> pero devolver List<Medicamento> es más útil para la vista
     public List<Medicamento> obtenerAlertasBajoStock() {
         List<Medicamento> alertas = new ArrayList<>();
         for (Medicamento m : catalogoMedicamentos) {
@@ -94,9 +74,13 @@ public class InventarioController {
         return alertas;
     }
 
+    public List<Medicamento> getCatalogoMedicamentos() {
+        return new ArrayList<>(catalogoMedicamentos);
+    }
+
     private void agregarAlCatalogo(Medicamento m) {
         if (buscarMedicamento(m.getNombre()) != null) {
-            throw new IllegalStateException("El medicamento ya se encuentra registrado.");
+            throw new IllegalStateException("El medicamento '" + m.getNombre() + "' ya está registrado.");
         }
         this.catalogoMedicamentos.add(m);
     }

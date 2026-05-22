@@ -73,7 +73,7 @@ public class AgendaController {
     }
     
     public void omitirToma(Tratamiento tratamiento) {
-        // ¡También es buena idea registrar si se la saltó!
+        //registrar si se salto la toma
         LocalDateTime horaActual = LocalDateTime.now();
         tratamiento.agregarRegistroHistorial("Toma OMITIDA el: " + horaActual.toLocalDate() + " a las " + horaActual.toLocalTime());
         
@@ -83,9 +83,8 @@ public class AgendaController {
     
     public List<Tratamiento> chequearAlarmasPendientes() {
         List<Tratamiento> pendientes = new ArrayList<>();
-        
         for (Tratamiento t : paciente.getTratamientos()) {
-            // Usamos el método correcto que definiste en Tratamiento
+            // Usamos el metodo que definimos en tratamiento.
             if (t.verificarAlertaHorario()) {
                 pendientes.add(t);
             }
