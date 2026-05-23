@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.medistation.controller;
 
-/**
- *
- * @author Rosa
- */
 import com.medistation.model.Paciente;
 import com.medistation.model.Tratamiento;
-import com.medistation.strategy.ValidadorTratamiento; // Paquete estratégico de validación
+import com.medistation.strategy.ValidadorTratamiento;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,55 +28,50 @@ public class AgendaController {
     }
 
     public boolean intentarAgendarTratamiento(Tratamiento nuevo) {
-        // Analizamos el tratamiento "suelto" contra los tratamientos que el paciente YA tiene activos.
         for (ValidadorTratamiento validador : validadoresActivos) {
             if (!validador.validar(nuevo, paciente.getTratamientos())) {
-                System.out.println("[RECHAZADO] No se pudo agendar el tratamiento debido a un conflicto médico.");
-                return false; // Se corta el método y NO se guarda nada.
+                System.out.println("[RECHAZADO] Conflicto médico detectado al agendar.");
+                return false; 
             }
         }
 
-        // Si el ciclo 'for' terminó y ningún validador devolvió 'false', significa que es 100% seguro.
         this.paciente.agregarTratamiento(nuevo);
-
-        System.out.println("[ÉXITO] Tratamiento validado y agendado correctamente.");
+        System.out.println("[ÉXITO] Tratamiento validado y agendado.");
         return true;
     }
 
+    // toma en tiempo real
     public void registrarToma(Tratamiento tratamiento) {
-        // 1. Guardamos el registro real con la hora actual
-        LocalDateTime horaActual = LocalDateTime.now();
-        tratamiento.agregarRegistroHistorial("Toma normal registrada el: " + horaActual.toLocalDate() + " a las " + horaActual.toLocalTime());
-        
-        // 2. La clase Tratamiento hace sus cálculos
-        tratamiento.registrarTomaEjecutada();
-        
-        // 3. Recalculamos cumplimiento
-        this.paciente.verificarCumplimiento();
-    }
-    
-    public void registrarToma(Tratamiento tratamiento, LocalDateTime horaManual) {
-        // 1. Guardamos el registro real indicando que fue manual
-        tratamiento.agregarRegistroHistorial(" Toma MANUAL registrada para el: " + horaManual.toLocalDate() + " a las " + horaManual.toLocalTime());
-        
-        // 2. Reutilizamos la lógica de cálculos
+        LocalDateTime ahora = LocalDateTime.now();
+        tratamiento.agregarRegistroHistorial(
+            "Toma registrada el: " + ahora.toLocalDate() + " a las " + ahora.toLocalTime()
+        );
         tratamiento.registrarTomaEjecutada();
         this.paciente.verificarCumplimiento();
     }
-    
+
+    // toma manual con hora especifica (atrasada)
+    public void registrarToma(Tratamiento tratamiento, LocalDateTime horaRealDeToma) {
+        tratamiento.agregarRegistroHistorial(
+            "Toma MANUAL: tomada a las " + horaRealDeToma.toLocalTime()
+            + " del " + horaRealDeToma.toLocalDate()
+        );
+        tratamiento.registrarTomaManual(horaRealDeToma);
+        this.paciente.verificarCumplimiento();
+    }
+
     public void omitirToma(Tratamiento tratamiento) {
-        //registrar si se salto la toma
-        LocalDateTime horaActual = LocalDateTime.now();
-        tratamiento.agregarRegistroHistorial("Toma OMITIDA el: " + horaActual.toLocalDate() + " a las " + horaActual.toLocalTime());
-        
+        LocalDateTime ahora = LocalDateTime.now();
+        tratamiento.agregarRegistroHistorial(
+            "Toma OMITIDA el: " + ahora.toLocalDate() + " a las " + ahora.toLocalTime()
+        );
         tratamiento.registrarTomaOmitida();
         this.paciente.verificarCumplimiento();
     }
-    
+
     public List<Tratamiento> chequearAlarmasPendientes() {
         List<Tratamiento> pendientes = new ArrayList<>();
         for (Tratamiento t : paciente.getTratamientos()) {
-            // Usamos el metodo que definimos en tratamiento.
             if (t.verificarAlertaHorario()) {
                 pendientes.add(t);
             }

@@ -1,22 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.medistation.model;
 
-/**
- *
- * @author Rosa
- */
 public class Inhalador extends Medicamento {
 
-    public Inhalador(String nombre, String principioActivo, double stock, double umbralAlerta) {
-        super(nombre, principioActivo, stock, "dosis/puffs", umbralAlerta);
+    public Inhalador(String nombre, String principioActivo, int envases, double mlPorEnvase) {
+        // umbral en 0 porque se define dinamico por el tratamiento
+        super(nombre, principioActivo, envases, mlPorEnvase, "dosis/puffs", 0.0);
     }
 
     @Override
     public void reducirStock(double cantidad) {
-        // En inhaladores restamos puffs inhalados
         super.actualizarStock(-cantidad);
     }
 }
