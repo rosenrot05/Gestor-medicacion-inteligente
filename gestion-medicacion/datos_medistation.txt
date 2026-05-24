@@ -1,0 +1,7 @@
+=== PACIENTES ===
+Carlos Martinez;65;70.5;;
+Lucia Fernandez;42;60.0;;
+Roberto Gomez;80;75.2;;
+man;123;1233.0;1,1123123;VISUAL_PARCIAL
+=== TRATAMIENTOS ===
+=== INVENTARIO ===

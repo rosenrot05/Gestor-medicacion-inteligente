@@ -100,4 +100,9 @@ public class Tratamiento {
         this.proximaToma = this.proximaToma.plusHours(frecuenciaHoras);
         this.estadoActual = EstadoToma.PENDIENTE;
     }
+    
+    // Método para poder extraer el medicamento del tratamiento
+    public Medicamento getMedicamento() {
+        return this.medicina; 
+    }
 }
