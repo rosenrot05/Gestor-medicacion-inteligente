@@ -7,4 +7,4 @@ public interface ValidadorTratamiento {
     
     // retorna true si no hay conflictos medicos
     boolean validar(Tratamiento nuevo, List<Tratamiento> activos);
-}
+}   
